@@ -32,19 +32,14 @@ uv sync
 
 ## 📚 Projects
 
-### 🏥 MedTech AI Opportunity Finder
-Generate creative healthcare/pharma AI business opportunities with pain points and solutions.
-- **Model:** OpenAI | **Skill Level:** Beginner
+## 📚 Projects
 
-### 💊 MedGuard Debate
-Multi-agent debate system for clinical drug interaction analysis with adversarial perspectives.
-- **Model:** OpenAI | **Skill Level:** Intermediate
-- 🔗 Related: [DrugX](https://huggingface.co/spaces/lisekarimi/DrugX) - Drug interaction platform
-
-### 🌐 PageBotAI
-Intelligent web crawling chatbot that explores websites to answer questions.
-- **Model:** OpenAI | **Skill Level:** Advanced
-- 🔗 [Live Demo](https://pagebotai-109730122719.us-central1.run.app)
+| Project | Description | Model | Skill Level | Links |
+|---------|-------------|-------|-------------|-------|
+| 🏥 **MedTech AI Opportunity Finder** | Generate creative healthcare/pharma AI business opportunities with pain points and solutions | OpenAI | Beginner | - |
+| 💊 **MedGuard Debate** | Multi-agent debate system for clinical drug interaction analysis with adversarial perspectives | OpenAI | Intermediate | [Related Project](https://drugx.lisekarimi.com) |
+| 🌐 **PageBotAI** | Intelligent web crawling chatbot that explores websites to answer questions | OpenAI | Advanced | [Demo](https://pagebotai.lisekarimi.com) |
+| ☀️ **WeatherMate** | AI agent enhanced with external tools for real-time weather data and event recommendations | OpenAI | Advanced | - |
 
 ## 📚 Learning Path
 
