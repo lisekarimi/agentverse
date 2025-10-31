@@ -39,7 +39,8 @@ uv sync
 | 🏥 **MedTech AI Opportunity Finder** | Generate creative healthcare/pharma AI business opportunities with pain points and solutions | OpenAI | Beginner | - |
 | 💊 **MedGuard Debate** | Multi-agent debate system for clinical drug interaction analysis with adversarial perspectives | OpenAI | Intermediate | [Related Project](https://drugx.lisekarimi.com) |
 | 🌐 **PageBotAI** | Intelligent web crawling chatbot that explores websites to answer questions | OpenAI | Advanced | [Demo](https://pagebotai.lisekarimi.com) |
-| ☀️ **WeatherMate** | AI agent enhanced with external tools for real-time weather data and event recommendations | OpenAI | Advanced | - |
+| ☀️ **WeatherMate** | AI agent enhanced with external tools for real-time weather data and event recommendations | OpenAI | Intermediate | - |
+| 📢 **MedReach** | Multi-Agentic AI System for Personalized HCP Outreach | OpenAI, llama-3.3-70b-versatile, gemini-2.5-flash | Beginner | - |
 
 ## 📚 Learning Path
 
