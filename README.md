@@ -40,6 +40,7 @@ uv sync
 | ☀️ **WeatherMate** | AI agent enhanced with external tools for real-time weather data and event recommendations | OpenAI | Intermediate | - |
 | 📢 **MedReach** | Multi-Agentic AI System for Personalized HCP Outreach | OpenAI, llama-3.3-70b-versatile, gemini-2.5-flash | Intermediate | - |
 | 💼 **AskMyCV** | AI agent for answering career questions using resume data | OpenAI | Beginner | [Demo](https://lisekarimi.com) |
+| 💹 **PRISM** | AI-powered swap trading monitoring system using CrewAI multi-agent framework | OpenAI | Advanced | [Demo](https://prism.lisekarimi.com) |
 
 ## 📚 Learning Path
 
