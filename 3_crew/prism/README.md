@@ -63,6 +63,7 @@ If you want to access the full codebase with Gradio web dashboard and Docker sup
 
 Run the crew directly:
    ```bash
+   uv sync
    cd .\3_crew\prism
    crewai run
    ```
