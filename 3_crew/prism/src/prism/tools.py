@@ -1,11 +1,16 @@
-# src/prism/tools/calculation_tools.py
+# src/prism/tools.py
+"""All tools for PRISM trading system."""
 from datetime import datetime
 
 from crewai.tools import tool
 from pydantic import Field
 
-from ..utils import logger
+from .database import DatabaseConnection
 
+
+# ============================================================================
+# Calculation Tools
+# ============================================================================
 
 def _calculate_years_to_maturity_internal(maturity_date):
     """Calculate years to maturity."""
@@ -106,13 +111,7 @@ def calculate_swap_pnl(
 
     Formula: (Current_Rate - Entry_Rate) × Notional × Years × Direction
     """
-    position_id = position.get("position_id", "unknown")
-    logger.info(f"💰 Calculating P&L for position {position_id}")
-
     result = _calculate_swap_pnl_internal(position, current_rate)
-    logger.info(
-        f"  P&L: ${result['pnl']:,.2f} | Rate change: {result['rate_change_bps']} bps"
-    )
     return result
 
 
@@ -124,7 +123,6 @@ def calculate_years_to_maturity(
 ):
     """Calculate years remaining until swap maturity."""
     years = _calculate_years_to_maturity_internal(maturity_date)
-    logger.debug(f"  Years to maturity: {years:.2f} (maturity: {maturity_date})")
     return years
 
 
@@ -137,17 +135,7 @@ def check_trading_signal(
     threshold_loss: float = Field(default=-25000, description="Stop loss in dollars"),
 ):
     """Determine if a trading signal should be triggered based on P&L thresholds."""
-    logger.debug(
-        f"🔍 Checking trading signal: P&L=${pnl:,.2f}, Profit threshold=${threshold_profit:,.2f}, Loss threshold=${threshold_loss:,.2f}"
-    )
-
     signal = _check_trading_signal_internal(pnl, threshold_profit, threshold_loss)
-
-    if signal["signal"] == "CLOSE":
-        logger.warning(f"🚨 {signal['signal']}: {signal['reason']}")
-    else:
-        logger.debug(f"  Signal: {signal['signal']} - {signal['reason']}")
-
     return signal
 
 
@@ -158,3 +146,126 @@ def calculate_dynamic_thresholds(
 ):
     """Calculate dynamic profit/loss thresholds based on position size and volatility."""
     return _calculate_dynamic_thresholds_internal(position, volatility)
+
+
+# ============================================================================
+# Database Tools
+# ============================================================================
+
+@tool("Get All Positions")
+def get_all_positions():
+    """Fetch all trader swap positions from database."""
+    db = DatabaseConnection()
+    db.connect()
+
+    query = """
+        SELECT position_id, trade_date, maturity_date, notional,
+               fixed_rate, float_index, pay_receive, currency
+        FROM swap_positions
+        ORDER BY trade_date DESC
+    """
+
+    positions = db.execute_query(query)
+    db.close()
+
+    return positions
+
+
+@tool("Get Position By ID")
+def get_position_by_id(position_id: str):
+    """Fetch a specific swap position by ID."""
+    db = DatabaseConnection()
+    db.connect()
+
+    query = """
+        SELECT * FROM swap_positions WHERE position_id = %s
+    """
+
+    position = db.execute_query(query, (position_id,))
+    db.close()
+
+    return position[0] if position else None
+
+
+@tool("Insert Trade Signal")
+def insert_trade_signal(
+    position_id: str,
+    signal_type: str,
+    current_pnl: float,
+    reason: str,
+    recommended_action: str,
+):
+    """Insert a trade signal into the database."""
+    db = DatabaseConnection()
+    db.connect()
+
+    insert_query = """
+        INSERT INTO trade_signals (position_id, signal_type, current_pnl, reason, recommended_action, timestamp, executed)
+        VALUES (%s, %s, %s, %s, %s, NOW(), FALSE)
+    """
+
+    db.execute_query(
+        insert_query,
+        (position_id, signal_type, current_pnl, reason, recommended_action),
+    )
+    db.close()
+
+    return f"Signal {signal_type} recorded for {position_id}"
+
+
+# ============================================================================
+# Market Data Tools
+# ============================================================================
+
+@tool("Store Market Rates")
+def store_market_rates(rates: list):
+    """Store market rates in database."""
+    db = DatabaseConnection()
+    db.connect()
+
+    for rate in rates:
+        # Strip % and convert to float if needed
+        mid_rate = rate["mid_rate"]
+        if isinstance(mid_rate, str):
+            mid_rate = float(mid_rate.replace("%", ""))
+
+        # Same for bid_rate and ask_rate
+        bid_rate = rate.get("bid_rate", mid_rate - 0.01)
+        if isinstance(bid_rate, str):
+            bid_rate = float(bid_rate.replace("%", ""))
+
+        ask_rate = rate.get("ask_rate", mid_rate + 0.01)
+        if isinstance(ask_rate, str):
+            ask_rate = float(ask_rate.replace("%", ""))
+
+        insert_query = """
+            INSERT INTO market_rates (tenor, currency, mid_rate, bid_rate, ask_rate, timestamp, source)
+            VALUES (%s, %s, %s, %s, %s, NOW(), 'Serper')
+        """
+        db.execute_query(
+            insert_query,
+            (rate["tenor"], rate.get("currency", "USD"), mid_rate, bid_rate, ask_rate),
+        )
+
+    db.close()
+    return f"Stored {len(rates)} rates"
+
+
+@tool("Get Latest Market Rate")
+def get_latest_market_rate(tenor: str, currency: str = "USD"):
+    """Get the most recent market rate for a specific tenor."""
+    db = DatabaseConnection()
+    db.connect()
+
+    query = """
+        SELECT mid_rate, bid_rate, ask_rate, timestamp
+        FROM market_rates
+        WHERE tenor = %s AND currency = %s
+        ORDER BY timestamp DESC
+        LIMIT 1
+    """
+
+    result = db.execute_query(query, (tenor, currency))
+    db.close()
+
+    return result[0] if result else None

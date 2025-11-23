@@ -5,17 +5,20 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
 
-from prism.constants import DEFAULT_CURRENCY, TENORS
-
-from .tools.calculation_tools import (
+from .tools import (
     calculate_dynamic_thresholds,
     calculate_swap_pnl,
     calculate_years_to_maturity,
     check_trading_signal,
+    get_all_positions,
+    get_latest_market_rate,
+    insert_trade_signal,
+    store_market_rates,
 )
-from .tools.database_tools import get_all_positions, insert_trade_signal
-from .tools.market_data_tools import get_latest_market_rate, store_market_rates
-from .utils import logger
+
+# Trading configuration constants
+TENORS = ["2Y", "5Y", "10Y", "30Y"]
+DEFAULT_CURRENCY = "USD"
 
 
 @CrewBase
@@ -28,7 +31,6 @@ class PrismCrew:
     @agent
     def market_data_agent(self) -> Agent:
         """Create the Market Data Agent for fetching and storing market rates."""
-        logger.debug("Initializing Market Data Agent")
         return Agent(
             config=self.agents_config["market_data_agent"],
             tools=[SerperDevTool(), store_market_rates],
@@ -38,7 +40,6 @@ class PrismCrew:
     @agent
     def position_manager_agent(self) -> Agent:
         """Create the Position Manager Agent for retrieving portfolio positions."""
-        logger.debug("Initializing Position Manager Agent")
         return Agent(
             config=self.agents_config["position_manager_agent"],
             tools=[get_all_positions],
@@ -48,7 +49,6 @@ class PrismCrew:
     @agent
     def risk_calculator_agent(self) -> Agent:
         """Create the Risk Calculator Agent for computing swap PnL."""
-        logger.debug("Initializing Risk Calculator Agent")
         return Agent(
             config=self.agents_config["risk_calculator_agent"],
             tools=[
@@ -62,7 +62,6 @@ class PrismCrew:
     @agent
     def risk_manager_agent(self) -> Agent:
         """Create the Risk Manager Agent for calculating dynamic risk thresholds."""
-        logger.debug("Initializing Risk Manager Agent")
         return Agent(
             config=self.agents_config["risk_manager_agent"],
             tools=[calculate_dynamic_thresholds],
@@ -72,7 +71,6 @@ class PrismCrew:
     @agent
     def trading_decision_agent(self) -> Agent:
         """Create the Trading Decision Agent for evaluating signals and making trading decisions."""
-        logger.debug("Initializing Trading Decision Agent")
         return Agent(
             config=self.agents_config["trading_decision_agent"],
             tools=[check_trading_signal, insert_trade_signal],
@@ -117,7 +115,6 @@ class PrismCrew:
     @crew
     def crew(self) -> Crew:
         """Create the Prism Swap Trading crew."""
-        logger.info("🤖 Assembling PRISM crew with 5 agents")
         return Crew(
             agents=self.agents,
             tasks=self.tasks,
@@ -129,15 +126,12 @@ class PrismCrew:
 def main():
     """Entry point for crewai run command."""
     try:
-        logger.info("🚀 Starting PRISM crew execution")
         inputs = {
             "cycle": 1,
             "tenors": ", ".join(TENORS),
             "currency": DEFAULT_CURRENCY,
         }
-        result = PrismCrew().crew().kickoff(inputs=inputs)
-        logger.info(f"✅ Crew execution completed: {result}")
+        PrismCrew().crew().kickoff(inputs=inputs)
         sys.exit(0)
-    except Exception as e:
-        logger.error(f"❌ Error during crew execution: {e}")
+    except Exception:
         sys.exit(1)

@@ -35,8 +35,6 @@ PRISM monitors USD SOFR swap trading positions in real-time and automatically ge
 - **PostgreSQL** - Position & rate storage (Neon)
 - **Python 3.11** - Runtime
 
-
-
 ## 📋 Pre-requisites
 
 - PostgreSQL database (you can use https://neon.com/ which is free)
@@ -53,12 +51,6 @@ PRISM monitors USD SOFR swap trading positions in real-time and automatically ge
 2. **Set Up Environment**:
    - Copy the `.env.example` to `.env` and fill in the required environment variables for The crew prism project
 
-If you want to access the full codebase with Gradio web dashboard and Docker support, clone the original repository:
-   ```bash
-   git clone https://github.com/lisekarimi/prism.git
-   cd prism
-   ```
-
 ## 🚀 Quick Start
 
 Run the crew directly:
@@ -67,6 +59,8 @@ Run the crew directly:
    cd .\3_crew\prism
    crewai run
    ```
+
+For full codebase with Gradio dashboard: [github.com/lisekarimi/prism](https://github.com/lisekarimi/prism)
 
 ## 🗄️ Database Schema
 
