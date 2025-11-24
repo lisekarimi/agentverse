@@ -32,12 +32,9 @@ PRISM monitors USD SOFR swap trading positions in real-time and automatically ge
 ## 🛠️ Tech Stack
 
 - **CrewAI** - Multi-agent orchestration
-- **PostgreSQL** - Position & rate storage (Neon)
 - **Python 3.11** - Runtime
 
 ## 📋 Pre-requisites
-
-- PostgreSQL database (you can use https://neon.com/ which is free)
 - OpenAI API key for LLM
 - Serper API key from https://serper.dev/ for Google Search API
 
@@ -49,7 +46,7 @@ PRISM monitors USD SOFR swap trading positions in real-time and automatically ge
    ```
 
 2. **Set Up Environment**:
-   - Copy the `.env.example` to `.env` and fill in the required environment variables for The crew prism project
+   - Add `SERPER_API_KEY` to `.env`
 
 ## 🚀 Quick Start
 

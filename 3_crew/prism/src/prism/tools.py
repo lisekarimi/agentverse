@@ -178,7 +178,7 @@ def get_position_by_id(position_id: str):
     db.connect()
 
     query = """
-        SELECT * FROM swap_positions WHERE position_id = %s
+        SELECT * FROM swap_positions WHERE position_id = ?
     """
 
     position = db.execute_query(query, (position_id,))
@@ -201,7 +201,7 @@ def insert_trade_signal(
 
     insert_query = """
         INSERT INTO trade_signals (position_id, signal_type, current_pnl, reason, recommended_action, timestamp, executed)
-        VALUES (%s, %s, %s, %s, %s, NOW(), FALSE)
+        VALUES (?, ?, ?, ?, ?, datetime('now'), 0)
     """
 
     db.execute_query(
@@ -240,7 +240,7 @@ def store_market_rates(rates: list):
 
         insert_query = """
             INSERT INTO market_rates (tenor, currency, mid_rate, bid_rate, ask_rate, timestamp, source)
-            VALUES (%s, %s, %s, %s, %s, NOW(), 'Serper')
+            VALUES (?, ?, ?, ?, ?, datetime('now'), 'Serper')
         """
         db.execute_query(
             insert_query,
@@ -260,7 +260,7 @@ def get_latest_market_rate(tenor: str, currency: str = "USD"):
     query = """
         SELECT mid_rate, bid_rate, ask_rate, timestamp
         FROM market_rates
-        WHERE tenor = %s AND currency = %s
+        WHERE tenor = ? AND currency = ?
         ORDER BY timestamp DESC
         LIMIT 1
     """

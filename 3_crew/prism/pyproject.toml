@@ -7,8 +7,7 @@ requires-python = ">=3.11,<3.13"
 dependencies = [
     "crewai>=0.80.0",
     "crewai-tools>=0.12.0",
-    "psycopg2-binary>=2.9.0", # database connection
-    "python-dotenv>=1.0.0", # environment variables
+    "python-dotenv>=1.0.0",
 ]
 
 [project.scripts]

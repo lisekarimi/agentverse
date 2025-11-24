@@ -5,6 +5,7 @@ from crewai import Agent, Crew, Process, Task
 from crewai.project import CrewBase, agent, crew, task
 from crewai_tools import SerperDevTool
 
+from .database import initialize_database
 from .tools import (
     calculate_dynamic_thresholds,
     calculate_swap_pnl,
@@ -126,6 +127,9 @@ class PrismCrew:
 def main():
     """Entry point for crewai run command."""
     try:
+        # Initialize database before running crew
+        initialize_database()
+
         inputs = {
             "cycle": 1,
             "tenors": ", ".join(TENORS),

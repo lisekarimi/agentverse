@@ -1,78 +1,68 @@
 # src/prism/database.py
 """Database connection, schema, and seed data for PRISM."""
 import os
-
-import psycopg2
-from dotenv import load_dotenv
-from psycopg2.extras import RealDictCursor
-
-load_dotenv()
+import sqlite3
 
 # Database Schema
 SCHEMA_SQL = """
 -- Create positions table
 CREATE TABLE IF NOT EXISTS swap_positions (
-    position_id VARCHAR(50) PRIMARY KEY,
-    trade_date DATE NOT NULL,
-    maturity_date DATE NOT NULL,
-    notional DECIMAL(15,2) NOT NULL,
-    fixed_rate DECIMAL(6,4) NOT NULL,
-    float_index VARCHAR(20) NOT NULL,
-    pay_receive VARCHAR(10) NOT NULL,
-    currency VARCHAR(3) NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    position_id TEXT PRIMARY KEY,
+    trade_date TEXT NOT NULL,
+    maturity_date TEXT NOT NULL,
+    notional REAL NOT NULL,
+    fixed_rate REAL NOT NULL,
+    float_index TEXT NOT NULL,
+    pay_receive TEXT NOT NULL,
+    currency TEXT NOT NULL,
+    created_at TEXT DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create market rates table
 CREATE TABLE IF NOT EXISTS market_rates (
-    rate_id SERIAL PRIMARY KEY,
-    tenor VARCHAR(10) NOT NULL,
-    currency VARCHAR(3) NOT NULL,
-    mid_rate DECIMAL(6,4) NOT NULL,
-    bid_rate DECIMAL(6,4),
-    ask_rate DECIMAL(6,4),
-    timestamp TIMESTAMP NOT NULL,
-    source VARCHAR(50)
+    rate_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    tenor TEXT NOT NULL,
+    currency TEXT NOT NULL,
+    mid_rate REAL NOT NULL,
+    bid_rate REAL,
+    ask_rate REAL,
+    timestamp TEXT NOT NULL,
+    source TEXT
 );
 
 -- Create trade signals table
 CREATE TABLE IF NOT EXISTS trade_signals (
-    signal_id SERIAL PRIMARY KEY,
-    position_id VARCHAR(50),
-    signal_type VARCHAR(20),
+    signal_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    position_id TEXT,
+    signal_type TEXT,
     reason TEXT,
-    current_pnl DECIMAL(15,2),
+    current_pnl REAL,
     recommended_action TEXT,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    executed BOOLEAN DEFAULT FALSE,
+    timestamp TEXT DEFAULT CURRENT_TIMESTAMP,
+    executed INTEGER DEFAULT 0,
     FOREIGN KEY (position_id) REFERENCES swap_positions(position_id)
 );
-
--- Create demo executions table for rate limiting
-CREATE TABLE IF NOT EXISTS demo_executions (
-    id SERIAL PRIMARY KEY,
-    ip_address VARCHAR(45) NOT NULL,
-    last_run TIMESTAMP DEFAULT NOW()
-);
-
-CREATE INDEX IF NOT EXISTS idx_ip_time ON demo_executions(ip_address, last_run);
 """
 
 
 class DatabaseConnection:
     """Manages database connections and query execution."""
 
-    def __init__(self):
-        """Initialize database connection manager."""
-        self.database_url = os.getenv("DATABASE_URL")
+    def __init__(self, db_path="prism.db"):
+        """Initialize database connection manager.
+
+        Args:
+            db_path: Path to SQLite database file (default: "prism.db")
+        """
+        self.db_path = db_path
         self.conn = None
 
     def connect(self):
         """Establish database connection."""
         try:
-            self.conn = psycopg2.connect(
-                self.database_url, cursor_factory=RealDictCursor
-            )
+            self.conn = sqlite3.connect(self.db_path)
+            # Use row_factory to get dict-like results (similar to RealDictCursor)
+            self.conn.row_factory = sqlite3.Row
             return self.conn
         except Exception:
             raise
@@ -86,10 +76,16 @@ class DatabaseConnection:
         """Execute a query and return results."""
         cursor = self.conn.cursor()
         try:
-            cursor.execute(query, params)
+            # SQLite uses ? placeholders instead of %s
+            # Convert PostgreSQL-style %s to SQLite-style ?
+            if params:
+                query = query.replace('%s', '?')
+            cursor.execute(query, params or [])
+
             if query.strip().upper().startswith("SELECT"):
                 results = cursor.fetchall()
-                return results
+                # Convert Row objects to dicts for compatibility
+                return [dict(row) for row in results]
             else:
                 self.conn.commit()
                 rowcount = cursor.rowcount
@@ -104,7 +100,7 @@ class DatabaseConnection:
         """Initialize database schema from SQL string."""
         cursor = self.conn.cursor()
         try:
-            cursor.execute(SCHEMA_SQL)
+            cursor.executescript(SCHEMA_SQL)
             self.conn.commit()
         except Exception:
             self.conn.rollback()
@@ -115,11 +111,14 @@ class DatabaseConnection:
 
 def initialize_database():
     """Initialize the database with schema."""
+    # Delete existing database for fresh start
+    if os.path.exists("prism.db"):
+        os.remove("prism.db")
+
     db = DatabaseConnection()
     db.connect()
     db.initialize_schema()
     db.close()
-    # Seed initial data
     seed_positions()
 
 
@@ -173,14 +172,12 @@ def seed_positions():
     ]
 
     insert_query = """
-        INSERT INTO swap_positions
+        INSERT OR IGNORE INTO swap_positions
         (position_id, trade_date, maturity_date, notional, fixed_rate, float_index, pay_receive, currency)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-        ON CONFLICT (position_id) DO NOTHING
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     """
 
     for position in positions:
         db.execute_query(insert_query, position)
 
     db.close()
-    print(f"✅ Seeded {len(positions)} swap positions!")
