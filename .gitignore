@@ -15,3 +15,7 @@ wheels/
 # data
 data/
 logs/
+
+# sidekick
+**/workspace/*
+sidekick_memory.db*
