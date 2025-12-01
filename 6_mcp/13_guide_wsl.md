@@ -58,6 +58,7 @@ uv venv
 
 ## 7. Sync dependencies
 ```bash
+uv add jupyter
 uv sync
 ```
 
