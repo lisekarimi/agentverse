@@ -5,6 +5,10 @@ build/
 dist/
 wheels/
 *.egg-info
+# Jupyter notebook checkpoints
+**/.ipynb_checkpoints/
+.DS_Store
+
 
 # Virtual environments
 .venv
@@ -16,6 +20,7 @@ wheels/
 data/
 logs/
 
-# sidekick
+# logs
+**/sandbox/*
 **/workspace/*
 sidekick_memory.db*
