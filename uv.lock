@@ -58,6 +58,7 @@ dependencies = [
     { name = "crewai-tools" },
     { name = "google-search-results" },
     { name = "gradio" },
+    { name = "holidays" },
     { name = "httpx" },
     { name = "ipywidgets" },
     { name = "jupyter" },
@@ -82,6 +83,7 @@ dependencies = [
     { name = "psycopg2-binary" },
     { name = "pypdf" },
     { name = "pypdf2" },
+    { name = "python-dateutil" },
     { name = "python-dotenv" },
     { name = "pyyaml" },
     { name = "requests" },
@@ -110,6 +112,7 @@ requires-dist = [
     { name = "crewai-tools", specifier = ">=0.12.0" },
     { name = "google-search-results", specifier = ">=2.4.2" },
     { name = "gradio", specifier = ">=5.22.0" },
+    { name = "holidays", specifier = ">=0.21.0" },
     { name = "httpx", specifier = ">=0.28.1" },
     { name = "ipywidgets", specifier = ">=8.1.5" },
     { name = "jupyter", specifier = ">=1.1.1" },
@@ -134,6 +137,7 @@ requires-dist = [
     { name = "psycopg2-binary", specifier = ">=2.9.0" },
     { name = "pypdf", specifier = ">=5.4.0" },
     { name = "pypdf2", specifier = ">=3.0.1" },
+    { name = "python-dateutil", specifier = ">=2.9.0" },
     { name = "python-dotenv", specifier = ">=1.0.1" },
     { name = "pyyaml", specifier = ">=6.0.2" },
     { name = "requests", specifier = ">=2.32.3" },
@@ -1705,6 +1709,18 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/6c/3c/28cc4db153a7601a996985bcb564f7b8f5b9e1a706c7537aad4b4809f358/hf_xet-1.1.9-cp37-abi3-musllinux_1_2_aarch64.whl", hash = "sha256:ad1022e9a998e784c97b2173965d07fe33ee26e4594770b7785a8cc8f922cd95", size = 3251429, upload-time = "2025-08-27T23:05:16.471Z" },
     { url = "https://files.pythonhosted.org/packages/84/17/7caf27a1d101bfcb05be85850d4aa0a265b2e1acc2d4d52a48026ef1d299/hf_xet-1.1.9-cp37-abi3-musllinux_1_2_x86_64.whl", hash = "sha256:86754c2d6d5afb11b0a435e6e18911a4199262fe77553f8c50d75e21242193ea", size = 3354643, upload-time = "2025-08-27T23:05:17.828Z" },
     { url = "https://files.pythonhosted.org/packages/cd/50/0c39c9eed3411deadcc98749a6699d871b822473f55fe472fad7c01ec588/hf_xet-1.1.9-cp37-abi3-win_amd64.whl", hash = "sha256:5aad3933de6b725d61d51034e04174ed1dce7a57c63d530df0014dea15a40127", size = 2804797, upload-time = "2025-08-27T23:05:20.77Z" },
+]
+
+[[package]]
+name = "holidays"
+version = "0.85"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "python-dateutil" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bc/40/5b625396d2c8d4f25bdb2d13b77dc216f8f8fd3d46a915d246f4b044f197/holidays-0.85.tar.gz", hash = "sha256:4291155456c6abde885487a05bd16f523d4ef4136819a55833ff86f60ca3cc3b", size = 799071, upload-time = "2025-11-17T22:38:23.779Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/96/6d/6a63fe3964425c65e8a8c4a2999daa90171a2dab30775a1cbda92394345b/holidays-0.85-py3-none-any.whl", hash = "sha256:46445107ee3251c7e2daa23773a86921fa2e29d09f850038e7bfa2c75a434ad8", size = 1312064, upload-time = "2025-11-17T22:38:22.19Z" },
 ]
 
 [[package]]
