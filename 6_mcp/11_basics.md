@@ -85,3 +85,8 @@ Server-Sent Events (SSE) is a way for a remote server to send messages to the cl
 **Now:** MCP doesn't change much if you already build AI tools
 
 **Future:** MCP could become the universal standard for sharing AI tools across all apps and platforms
+
+
+---
+
+📢 Discover more Agentic AI notebooks on my [GitHub repository](https://github.com/lisekarimi/agentverse) and explore additional AI projects on my [portfolio](https://lisekarimi.com).

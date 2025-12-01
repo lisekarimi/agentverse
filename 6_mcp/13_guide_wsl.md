@@ -68,3 +68,8 @@ uv run jupyter lab
 Copy the URL from terminal (like `http://localhost:8888/...`) and paste into your Windows browser
 
 **Now you can run your MCP code in the notebook!**
+
+
+
+---
+📢 Discover more Agentic AI notebooks on my [GitHub repository](https://github.com/lisekarimi/agentverse) and explore additional AI projects on my [portfolio](https://lisekarimi.com).
