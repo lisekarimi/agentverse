@@ -12,6 +12,6 @@
 For Windows users, run in WSL terminal:
 
 ```bash
-cd 6_mcp/datetime-mcp/
+cd 6_mcp/02_datetime-mcp/
 uv run use_date_mcp.py
 ```

@@ -32,15 +32,16 @@ uv sync
 
 ## 📚 Projects
 
-| Project | Description | Model | Skill Level | Links |
-|---------|-------------|-------|-------------|-------|
-| 🏥 **MedTech AI Opportunity Finder** | Generate creative healthcare/pharma AI business opportunities with pain points and solutions | OpenAI | Beginner | - |
-| 💊 **MedGuard Debate** | Multi-agent debate system for clinical drug interaction analysis with adversarial perspectives | OpenAI | Intermediate | [Related Project](https://drugx.lisekarimi.com) |
-| 🌐 **PageBotAI** | Intelligent web crawling chatbot that explores websites to answer questions | OpenAI | Advanced | [Demo](https://pagebotai.lisekarimi.com) |
-| ☀️ **WeatherMate** | AI agent enhanced with external tools for real-time weather data and event recommendations | OpenAI | Intermediate | - |
-| 📢 **MedReach** | Multi-Agentic AI System for Personalized HCP Outreach | OpenAI, llama-3.3-70b-versatile, gemini-2.5-flash | Intermediate | - |
-| 💼 **AskMyCV** | AI agent for answering career questions using resume data | OpenAI | Beginner | [Demo](https://lisekarimi.com) |
-| 💹 **PRISM** | AI-powered swap trading monitoring system using CrewAI multi-agent framework | OpenAI | Advanced | [Demo](https://prism.lisekarimi.com) |
+| Project | Description | Skill Level | LLM Framework | Links |
+|---------|-------------|-------------|---------------|-------|
+| 🏥 **MedTech AI Opportunity Finder** | Generate healthcare/pharma AI business opportunities | Beginner | NA | - |
+| 💊 **MedGuard Debate** | Multi-agent debate system for drug interaction analysis | Intermediate | NA | [Related Project](https://drugx.lisekarimi.com) |
+| 🌐 **PageBotAI** | Web crawling chatbot that answers questions | Advanced | NA | [Demo](https://pagebotai.lisekarimi.com) |
+| ☀️ **WeatherMate** | AI agent for weather and event recommendations | Intermediate | NA | [Demo](https://aiobot.lisekarimi.com) |
+| 📢 **MedReach** | Multi-Agentic AI System for Personalized HCP Outreach | Intermediate | OpenAI SDK | - |
+| 💼 **AskMyCV** | AI agent for answering career questions using resume data | Beginner | OpenAI SDK | [Demo](https://lisekarimi.com) |
+| 💹 **PRISM** | AI-powered swap trading monitoring system | Advanced | CrewAI | [Demo](https://prism.lisekarimi.com) |
+| 🤖 **Sidekick** | Personal AI assistant with evaluator feedback loop | Advanced | LangGraph, Microsoft Agent Framework | - |
 
 ## 📚 Learning Path
 
@@ -49,3 +50,7 @@ Each notebook includes:
 * **Step-by-step implementation** with explanations
 * **Workflow schema** to understand the core process
 * **Required API keys** and setup instructions
+
+---
+
+Ready to dive into the world of Agentic AI? 🚀
