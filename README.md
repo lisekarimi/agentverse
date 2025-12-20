@@ -2,6 +2,8 @@
 
 **Agentverse** is a collection of Jupyter notebooks for learning and building agentic AI systems. Explore multi-agent workflows, LLM orchestration, and real-world AI applications through hands-on projects inspired by [Ed Donner's AI Agents certification](https://github.com/ed-donner/agents).
 
+🌐 **Website:** To learn more, visit [agentverse.lisekarimi.com](https://agentverse.lisekarimi.com)
+
 **Main Course Links:**
 - **Udemy Course:** https://www.udemy.com/course/the-complete-agentic-ai-engineering-course/
 - **GitHub Repository:** https://github.com/ed-donner/agents
