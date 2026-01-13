@@ -70,6 +70,10 @@ body {
     overflow-x: hidden;
 }
 
+body.menu-open {
+    overflow: hidden;
+}
+
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -159,6 +163,57 @@ body {
 
 .btn-github::after {
     display: none;
+}
+
+/* Hamburger Menu */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    z-index: 1001;
+}
+
+.hamburger span {
+    width: 25px;
+    height: 3px;
+    background: var(--text-primary);
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Navigation Overlay */
+.nav-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-overlay.active {
+    display: block;
+    opacity: 1;
 }
 
 /* Hero Section */
@@ -879,17 +934,59 @@ section {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+    }
+
+    .nav-content {
+        position: relative;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        max-width: 300px;
+        height: 100vh;
+        background: rgba(17, 17, 24, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 80px var(--spacing-lg) var(--spacing-lg);
+        gap: var(--spacing-lg);
+        transition: right 0.3s ease;
+        box-shadow: var(--shadow-xl);
+        border-left: 1px solid var(--border);
+        z-index: 1000;
+    }
+
+    .nav-links.active {
+        right: 0;
+    }
+
+    .nav-links a {
+        width: 100%;
+        padding: var(--spacing-sm) 0;
+        font-size: var(--font-size-lg);
+    }
+
+    .btn-github {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    .hero {
+        padding-top: 160px;
+    }
+
     .hero-title {
         font-size: var(--font-size-4xl);
     }
 
     .hero-description {
         font-size: var(--font-size-lg);
-    }
-
-    .nav-links {
-        gap: var(--spacing-md);
-        font-size: var(--font-size-sm);
     }
 
     .project-grid {
@@ -924,18 +1021,17 @@ section {
 }
 
 @media (max-width: 480px) {
+    .hero {
+        padding-top: 150px;
+    }
+
     .hero-title {
         font-size: var(--font-size-3xl);
     }
 
-    .nav-content {
-        flex-direction: column;
-        gap: var(--spacing-md);
-    }
-
     .nav-links {
-        flex-wrap: wrap;
-        justify-content: center;
+        width: 85%;
+        max-width: none;
     }
 
     .hero-buttons {
