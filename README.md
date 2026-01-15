@@ -44,6 +44,7 @@ uv sync
 | 💼 **AskMyCV** | AI agent for answering career questions using resume data | Beginner | OpenAI SDK | [Demo](https://lisekarimi.com) |
 | 💹 **PRISM** | AI-powered swap trading monitoring system | Advanced | CrewAI | [Demo](https://prism.lisekarimi.com) |
 | 🤖 **Sidekick** | Personal AI assistant with evaluator feedback loop | Advanced | LangGraph, Microsoft Agent Framework | - |
+| 🤖 **AIObot MCP** | Activity suggestions based on weather and local events | Intermediate | OpenAI Agents SDK | [Demo](https://aiobot.lisekarimi.com) |
 
 ## 📚 Learning Path
 
